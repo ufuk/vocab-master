@@ -1,7 +1,7 @@
 ﻿{
   "manifest_version": 2,
   "name": "Vocab Master",
-  "description": "Reminds you vocabulary (or something else) while you surfing.",
+  "description": "Reminds you vocabulary while you surfing.",
   "version": "1.0.0",
   "author": "Ufuk Uzun",
   "background": {

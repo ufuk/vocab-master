@@ -5,17 +5,15 @@ function saveOptions() {
     console.log("Options saving: ");
     console.log(newOptions);
 
-    chrome.storage.sync.set(newOptions, function () {
-        // Saved
-        console.log('Options saved.');
+    localStorage.setItem("period", newOptions.period);
+    localStorage.setItem("activated", newOptions.activated);
 
-        // Show 'saved' message
-        displayStatus("Options saved.");
+    console.log('Options saved.');
 
-        // Send message to ...
-        chrome.runtime.sendMessage({message: "newOptionsSaved"}, function (response) {
-            console.log(response.message);
-        });
+    displayStatus("Options saved.");
+
+    chrome.runtime.sendMessage({message: "newOptionsSaved"}, function (response) {
+        console.log(response.message);
     });
 }
 
@@ -25,16 +23,17 @@ function restoreOptions() {
     var $activated = activatedInput();
 
     console.log("Options restoring...");
-    chrome.storage.sync.get({
-        period: 5,
-        activated: false
-    }, function (options) {
-        $period.val(options.period);
-        $activated.prop('checked', options.activated);
 
-        console.log("Options restored: ");
-        console.log(options);
-    });
+    var options = {
+        period: localStorage.getItem("period") || 5,
+        activated: localStorage.getItem("activated") || false
+    };
+
+    $period.val(options.period);
+    $activated.prop('checked', options.activated);
+
+    console.log("Options restored: ");
+    console.log(options);
 }
 
 // Helper methods

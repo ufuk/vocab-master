@@ -1,5 +1,3 @@
 setTimeout(function () {
-    chrome.storage.local.get('interceptedUrl', function (result) {
-        window.location.replace(result.interceptedUrl);
-    });
-}, 5000);
+    window.location.href = localStorage.getItem("interceptedUrl");
+}, 3000);
