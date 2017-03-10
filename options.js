@@ -26,7 +26,7 @@ function restoreOptions() {
 
     var options = {
         period: localStorage.getItem("period") || 5,
-        activated: localStorage.getItem("activated") || false
+        activated: localStorage.getItem("activated") == "true"
     };
 
     $period.val(options.period);

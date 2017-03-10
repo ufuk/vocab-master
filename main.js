@@ -20,7 +20,7 @@ chrome.webRequest.onBeforeRequest.addListener(
 
             var options = {
                 period: localStorage.getItem("period") || 0,
-                activated: localStorage.getItem("activated") || false,
+                activated: localStorage.getItem("activated") == "true",
                 lastInterceptingTime: localStorage.getItem("lastInterceptingTime") || 0
             };
 
