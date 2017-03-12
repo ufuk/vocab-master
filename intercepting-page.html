@@ -2,13 +2,30 @@
 <html>
 <head>
     <title>Vocab Master</title>
+    <link href="css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="css/intercepting-page.css" rel="stylesheet"/>
 </head>
 
 <body style="text-align: center">
-<img src="http://thecatapi.com/api/images/get?format=src&size=small">
-<p>Redirecting...</p>
+<div class="quote-container">
+    <i class="pin"></i>
+    <blockquote class="note yellow">
+        <div class="container">
+        </div>
+
+        <div class="actions">
+            <div class="do-not-show-again">
+                <span><i class="fa fa-times-circle-o"></i> No need to remind this</span>
+            </div>
+            <div class="show-again">
+                <span>Remind again <i class="fa fa-refresh"></i></span>
+            </div>
+        </div>
+    </blockquote>
+</div>
 
 <script src="jquery.min.js"></script>
-<script src="intercepting.js"></script>
+<script src="vocabulary.js"></script>
+<script src="intercepting-page.js"></script>
 </body>
 </html>

@@ -14,9 +14,7 @@
     "default_icon": "vocab-icon.png"
   },
   "web_accessible_resources": [
-    "intercepting-page.html",
-    "intercepting.js",
-    "jquery.min.js"
+    "intercepting-page.html"
   ],
   "permissions": [
     "http://*/*",
