@@ -12,18 +12,17 @@ function bindEvents() {
     });
 
     $('.show-again').click(function () {
-        window.location.href = interceptedUrl;
+        goToInterceptedUrl();
     });
 
     $('.do-not-show-again').click(function () {
-        window.location.href = interceptedUrl;
+        goToInterceptedUrl();
     });
 }
 
 function render() {
     var template =
         '<p class="word">{{word}}</p>' +
-        '<p class="type">{{type}}</p>' +
         '<p class="definition">{{definition}}</p>' +
         '{{translation}}' +
         '<p class="title">Example usages:</p>' +
@@ -31,8 +30,29 @@ function render() {
         '   {{examples}}' +
         '</ul>';
 
-    var randomIndex = Math.floor((Math.random() * vocabulary.globish.length));
-    var randomVocabulary = vocabulary.globish[randomIndex];
+    if (vocabulary.globish.length == 0) {
+        console.log("No vocabulary data! Redirecting directly to intercepted url...");
+        goToInterceptedUrl();
+    }
+
+    var randomVocabulary = {};
+    var retryCount = 0;
+    var isProperToShow = false;
+    do {
+        if (retryCount > 10) {
+            console.log("No proper vocabulary found to show after lots of trying! Redirecting directly to intercepted url...");
+            goToInterceptedUrl();
+        }
+        retryCount++;
+
+        var randomIndex = Math.floor((Math.random() * vocabulary.globish.length));
+        randomVocabulary = vocabulary.globish[randomIndex];
+        var definition = randomVocabulary.definitions && randomVocabulary.definitions['english'];
+        isProperToShow = definition && randomVocabulary.definitions['english'].trim().length > 0;
+        if (!isProperToShow) {
+            console.log("Vocabulary was not proper to show: " + JSON.stringify(randomVocabulary));
+        }
+    } while (!isProperToShow);
 
     var examplesContent = "";
     for (var i = 0; i < randomVocabulary.examples.length; i++) {
@@ -40,18 +60,22 @@ function render() {
     }
 
     var translationContent = "";
-    if (randomVocabulary.definitions['turkish']) {
+    var translation = randomVocabulary.definitions['turkish'];
+    if (translation && translation.length > 0) {
         translationContent =
             '<p class="title">Click for meaning in Turkish:</p>' +
-            '<p class="translation blurry-text">' + randomVocabulary.definitions['turkish'] + '</p>';
+            '<p class="translation blurry-text">' + translation + '</p>';
     }
 
     var renderResult = template
         .replace('{{word}}', randomVocabulary.word)
-        .replace('{{type}}', randomVocabulary.type)
         .replace('{{definition}}', randomVocabulary.definitions['english'])
         .replace('{{translation}}', translationContent)
         .replace('{{examples}}', examplesContent);
 
     $('div.container').append($(renderResult));
+}
+
+function goToInterceptedUrl() {
+    window.location.href = interceptedUrl;
 }
