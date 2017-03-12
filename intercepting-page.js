@@ -33,6 +33,7 @@ function render() {
     if (vocabulary.globish.length == 0) {
         console.log("No vocabulary data! Redirecting directly to intercepted url...");
         goToInterceptedUrl();
+        return;
     }
 
     var randomVocabulary = {};
@@ -40,8 +41,7 @@ function render() {
     var isProperToShow = false;
     do {
         if (retryCount > 10) {
-            console.log("No proper vocabulary found to show after lots of trying! Redirecting directly to intercepted url...");
-            goToInterceptedUrl();
+            break;
         }
         retryCount++;
 
@@ -53,6 +53,12 @@ function render() {
             console.log("Vocabulary was not proper to show: " + JSON.stringify(randomVocabulary));
         }
     } while (!isProperToShow);
+
+    if (!isProperToShow) {
+        console.log("No proper vocabulary found to show after lots of trying! Redirecting directly to intercepted url...");
+        goToInterceptedUrl();
+        return;
+    }
 
     var examplesContent = "";
     for (var i = 0; i < randomVocabulary.examples.length; i++) {
@@ -74,6 +80,8 @@ function render() {
         .replace('{{examples}}', examplesContent);
 
     $('div.container').append($(renderResult));
+
+    $('.quote-container').show();
 }
 
 function goToInterceptedUrl() {
