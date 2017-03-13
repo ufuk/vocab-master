@@ -1,6 +1,7 @@
 // Get intercepted URL
 var interceptedUrl = localStorage.getItem("interceptedUrl") || 'http://google.com';
 localStorage.removeItem("interceptedUrl");
+var excludedList = JSON.parse(localStorage.getItem("excludedList") || "[]");
 
 // Decide vocabulary
 if (vocabulary.globish.length == 0) {
@@ -12,7 +13,7 @@ var randomVocabulary = {};
 var retryCount = 0;
 var isProperToShow = false;
 do {
-    if (retryCount > 10) {
+    if (retryCount == 13) { // Lucky 13
         break;
     }
     retryCount++;
@@ -20,7 +21,7 @@ do {
     var randomIndex = Math.floor((Math.random() * vocabulary.globish.length));
     randomVocabulary = vocabulary.globish[randomIndex];
     var definition = randomVocabulary.definitions && randomVocabulary.definitions['english'];
-    isProperToShow = definition && randomVocabulary.definitions['english'].trim().length > 0;
+    isProperToShow = definition && randomVocabulary.definitions['english'].trim().length > 0 && excludedList.indexOf(JSON.hashCode(randomVocabulary)) == -1;
     if (!isProperToShow) {
         console.log("Vocabulary was not proper to show: " + JSON.stringify(randomVocabulary));
     }
@@ -49,6 +50,8 @@ function bindEvents() {
     });
 
     $('.do-not-show-again').click(function () {
+        excludedList.push(JSON.hashCode(randomVocabulary));
+        localStorage.setItem("excludedList", JSON.stringify(excludedList));
         goToInterceptedUrl();
     });
 }
