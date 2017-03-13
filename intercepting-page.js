@@ -65,7 +65,10 @@ function renderSticky() {
         '   {{examples}}' +
         '</ul>';
     for (var i = 0; i < randomVocabulary.examples.length; i++) {
-        examplesContent += '<li>' + randomVocabulary.examples[i] + '</li>';
+        var example = randomVocabulary.examples[i].trim();
+        if (example.length > 0) {
+            examplesContent += '<li>' + example + '</li>';
+        }
     }
     if (examplesContent && examplesContent != "") {
         examplesContent = examplesTemplate.replace("{{examples}}", examplesContent);
