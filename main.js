@@ -12,11 +12,11 @@ chrome.browserAction.onClicked.addListener(function () {
 
 // Blocking
 chrome.webRequest.onBeforeRequest.addListener(
-    function (details) {
-        var isProperToIntercept = details.method == "GET" && details.url.indexOf("http") == 0;
+    function (requestDetails) {
+        var isProperToIntercept = requestDetails.method == "GET" && requestDetails.url.indexOf("http") == 0;
 
         if (isProperToIntercept) {
-            console.log(JSON.stringify(details));
+            console.log(JSON.stringify(requestDetails));
 
             var options = {
                 period: localStorage.getItem("period") || 0,
@@ -46,11 +46,16 @@ chrome.webRequest.onBeforeRequest.addListener(
             console.log('Elapsed millis: ' + elapsedMillis + ' - ' + 'Period in millis: ' + periodInMillis);
 
             if (options.period > 0 && elapsedMillis > periodInMillis) {
-                console.log('Intercepting for url: ' + details.url);
+                console.log('Intercepting for url: ' + requestDetails.url);
 
                 var url = chrome.extension.getURL("intercepting-page.html");
 
-                localStorage.setItem("interceptedUrl", details.url);
+                chrome.tabs.query({active: true, currentWindow: true}, function (tabDetails) {
+                    var activeTabId = tabDetails[0].id;
+                    console.log("Current tab's id: " + activeTabId);
+                    Cookies.set("interceptedUrl" + activeTabId, requestDetails.url, {expires: 1});
+                });
+
                 localStorage.setItem("lastInterceptingTime", new Date().getTime());
 
                 return {

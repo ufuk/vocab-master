@@ -1,6 +1,4 @@
-// Get intercepted URL
-var interceptedUrl = localStorage.getItem("interceptedUrl") || 'http://google.com';
-localStorage.removeItem("interceptedUrl");
+// Get excluded words list (contains hash codes)
 var excludedList = JSON.parse(localStorage.getItem("excludedList") || "[]");
 
 // Decide vocabulary
@@ -103,5 +101,12 @@ function renderSticky() {
 }
 
 function goToInterceptedUrl() {
-    window.location.href = interceptedUrl;
+    chrome.tabs.query({active: true, currentWindow: true}, function (details) {
+        var activeTabId = details[0].id;
+        console.log("Current tab's id: " + activeTabId);
+
+        var cookieName = 'interceptedUrl' + activeTabId;
+        window.location.href = Cookies.get(cookieName) || 'http://google.com';
+        Cookies.remove(cookieName);
+    });
 }
