@@ -101,12 +101,9 @@ function renderSticky() {
 }
 
 function goToInterceptedUrl() {
-    chrome.tabs.query({active: true, currentWindow: true}, function (details) {
-        var activeTabId = details[0].id;
-        console.log("Current tab's id: " + activeTabId);
-
-        var cookieName = 'interceptedUrl' + activeTabId;
-        window.location.href = Cookies.get(cookieName) || 'http://google.com';
-        Cookies.remove(cookieName);
-    });
+    var interceptedUrl = window.location.search.replace('?url=', '').trim();
+    if (interceptedUrl.length == 0) {
+        interceptedUrl = 'http://google.com';
+    }
+    window.location.href = interceptedUrl;
 }

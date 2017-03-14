@@ -13,7 +13,8 @@ chrome.browserAction.onClicked.addListener(function () {
 // Blocking
 chrome.webRequest.onBeforeRequest.addListener(
     function (requestDetails) {
-        var isProperToIntercept = requestDetails.method == "GET" && requestDetails.url.indexOf("http") == 0;
+        var interceptedUrl = requestDetails.url;
+        var isProperToIntercept = requestDetails.method == "GET" && interceptedUrl.indexOf("http") == 0;
 
         if (isProperToIntercept) {
             console.log(JSON.stringify(requestDetails));
@@ -46,15 +47,9 @@ chrome.webRequest.onBeforeRequest.addListener(
             console.log('Elapsed millis: ' + elapsedMillis + ' - ' + 'Period in millis: ' + periodInMillis);
 
             if (options.period > 0 && elapsedMillis > periodInMillis) {
-                console.log('Intercepting for url: ' + requestDetails.url);
+                console.log('Intercepting for url: ' + interceptedUrl);
 
-                var url = chrome.extension.getURL("intercepting-page.html");
-
-                chrome.tabs.query({active: true, currentWindow: true}, function (tabDetails) {
-                    var activeTabId = tabDetails[0].id;
-                    console.log("Current tab's id: " + activeTabId);
-                    Cookies.set("interceptedUrl" + activeTabId, requestDetails.url, {expires: 1});
-                });
+                var url = chrome.extension.getURL("intercepting-page.html") + "?url=" + interceptedUrl;
 
                 localStorage.setItem("lastInterceptingTime", new Date().getTime());
 
