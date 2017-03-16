@@ -1,8 +1,11 @@
 // Get excluded words list (contains hash codes)
 var excludedList = JSON.parse(localStorage.getItem("excludedList") || "[]");
+var vocabularyListOption = localStorage.getItem("vocabularyList") || "globish";
 
 // Decide vocabulary
-if (vocabulary.globish.length == 0) {
+var selectedVocabularyList = vocabulary[vocabularyListOption];
+
+if (selectedVocabularyList.length == 0) {
     console.log("No vocabulary data! Redirecting directly to intercepted url...");
     goToInterceptedUrl();
 }
@@ -16,8 +19,8 @@ do {
     }
     retryCount++;
 
-    var randomIndex = Math.floor((Math.random() * vocabulary.globish.length));
-    randomVocabulary = vocabulary.globish[randomIndex];
+    var randomIndex = Math.floor((Math.random() * selectedVocabularyList.length));
+    randomVocabulary = selectedVocabularyList[randomIndex];
     var definition = randomVocabulary.definitions && randomVocabulary.definitions['english'];
     isProperToShow = definition && randomVocabulary.definitions['english'].trim().length > 0 && excludedList.indexOf(JSON.hashCode(randomVocabulary)) == -1;
     if (!isProperToShow) {
