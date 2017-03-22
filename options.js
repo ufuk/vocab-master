@@ -78,4 +78,4 @@ function displayStatus(statusText) {
 
 // Set event bindings
 document.addEventListener('DOMContentLoaded', restoreOptions);
-document.getElementById('save').addEventListener('click', saveOptions);
+$( 'input , select' ).change( saveOptions );
