@@ -84,22 +84,28 @@ function renderSticky() {
             '<p class="title">Click for meaning in Turkish:</p>' +
             '<p class="translation blurry-text">' + translation + '</p>';
     }
-
+    
+    //hide definition if enabled
+    var blurred = localStorage.getItem("blurredText") == 'true' ? 'blurry-text' : '' ;
+    
     // Render the sticky
     var stickyTemplate =
         '<p class="word">{{word}}</p>' +
+        '<div class="wrap {{blurred}}">' +
         '<p class="definition">{{definition}}</p>' +
         '{{translation}}' +
-        '{{examples}}';
+        '{{examples}}' +
+        '</div>';
 
     var renderingResult = stickyTemplate
         .replace('{{word}}', randomVocabulary.word)
         .replace('{{definition}}', randomVocabulary.definitions['english'])
         .replace('{{translation}}', translationContent)
+        .replace('{{blurred}}', blurred)
         .replace('{{examples}}', examplesContent);
 
     $('div.container').append($(renderingResult));
-
+    
     $('.quote-container').show();
 }
 
