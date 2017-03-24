@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>Vocab Master - Options</title>
     <style>
         body {
             padding: 0 15px 15px;
-            width: 300px;
-            height: 300px;
+            width: 250px;
+            height: 190px;
         }
 
         h1 {
@@ -25,8 +26,11 @@
 
         label {
             font-weight: bold;
+            min-width: 125px;
+            display: inline-block;
         }
-        #statusLabel{
+
+        #statusLabel {
             color: #389E38;
         }
     </style>
@@ -39,9 +43,8 @@
 </div>
 
 <div class="fullWidth">
-    <label>
-        Reminder activated? <input type="checkbox" name="activated">
-    </label>
+    <label>Reminder activated?</label>
+    <input type="checkbox" name="activated">
 </div>
 <div class="fullWidth">
     <label>

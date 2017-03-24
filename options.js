@@ -15,7 +15,7 @@ function saveOptions() {
     displayStatus("Options saved.");
 
     chrome.runtime.sendMessage({message: "newOptionsSaved"}, function (response) {
-        console.log(response.message);
+        // DO nothing for now
     });
 }
 
@@ -88,4 +88,4 @@ function displayStatus(statusText) {
 
 // Set event bindings
 document.addEventListener('DOMContentLoaded', restoreOptions);
-$( 'input , select' ).change( saveOptions );
+$('input , select').change(saveOptions);
