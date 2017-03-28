@@ -7,6 +7,7 @@ function saveOptions() {
 
     localStorage.setItem("period", newOptions.period);
     localStorage.setItem("activated", newOptions.activated);
+    localStorage.setItem("hideMeaning", newOptions.hideMeaning);
     localStorage.setItem("vocabularyList", newOptions.vocabularyList);
 
     console.log('Options saved.');
@@ -22,6 +23,7 @@ function saveOptions() {
 function restoreOptions() {
     var $period = periodInput();
     var $activated = activatedInput();
+    var $hideMeaning = meaningHideInput();
     var $vocabularyList = vocabularyListSelect();
 
     console.log("Options restoring...");
@@ -29,11 +31,13 @@ function restoreOptions() {
     var options = {
         period: localStorage.getItem("period") || 5,
         activated: localStorage.getItem("activated") == "true",
+        hideMeaning: localStorage.getItem("hideMeaning") == "true",
         vocabularyList: localStorage.getItem("vocabularyList") || "globish"
     };
 
     $period.val(options.period);
     $activated.prop('checked', options.activated);
+    $hideMeaning.prop('checked', options.hideMeaning);
 
     $vocabularyList
         .find('option[value="' + options.vocabularyList + '"]')
@@ -52,6 +56,10 @@ function activatedInput() {
     return $('input[name="activated"]');
 }
 
+function meaningHideInput() {
+    return $('input[name="hideMeaning"]');
+}
+
 function vocabularyListSelect() {
     return $('select[name="vocabularyList"]');
 }
@@ -59,11 +67,13 @@ function vocabularyListSelect() {
 function extractOptionsFromInputs() {
     var $period = periodInput();
     var $activated = activatedInput();
+    var $hideMeaning = meaningHideInput();
     var $vocabularyList = vocabularyListSelect();
 
     return {
         period: parseInt($period.val()),
         activated: $activated.prop('checked'),
+        hideMeaning: $hideMeaning.prop('checked'),
         vocabularyList: $vocabularyList.val()
     };
 }
