@@ -86,7 +86,7 @@ function renderSticky() {
     }
     
     //hide definition if enabled
-    var blurred = localStorage.getItem("blurredText") == 'true' ? 'blurry-text' : '' ;
+    var blurred = localStorage.getItem("hideMeaning") == 'true' ? 'blurry-text' : '' ;
     
     // Render the sticky
     var stickyTemplate =
