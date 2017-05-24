@@ -82,12 +82,12 @@ function renderSticky() {
     if (translation && translation.length > 0) {
         translationContent =
             '<p class="title">Click for meaning in Turkish:</p>' +
-            '<p class="translation blurry-text">' + translation + '</p>';
+            '<p class="translation">' + translation + '</p>';
     }
-    
-    //hide definition if enabled
-    var blurred = localStorage.getItem("hideMeaning") == 'true' ? 'blurry-text' : '' ;
-    
+
+    // Hide definition, translation and examples if option enabled
+    var blurred = localStorage.getItem("hideMeaning") == 'true' ? 'blurry-text' : '';
+
     // Render the sticky
     var stickyTemplate =
         '<p class="word">{{word}}</p>' +
@@ -105,7 +105,7 @@ function renderSticky() {
         .replace('{{examples}}', examplesContent);
 
     $('div.container').append($(renderingResult));
-    
+
     $('.quote-container').show();
 }
 

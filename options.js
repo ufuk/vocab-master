@@ -23,7 +23,7 @@ function saveOptions() {
 function restoreOptions() {
     var $period = periodInput();
     var $activated = activatedInput();
-    var $hideMeaning = meaningHideInput();
+    var $hideMeaning = hideMeaningInput();
     var $vocabularyList = vocabularyListSelect();
 
     console.log("Options restoring...");
@@ -56,7 +56,7 @@ function activatedInput() {
     return $('input[name="activated"]');
 }
 
-function meaningHideInput() {
+function hideMeaningInput() {
     return $('input[name="hideMeaning"]');
 }
 
@@ -67,7 +67,7 @@ function vocabularyListSelect() {
 function extractOptionsFromInputs() {
     var $period = periodInput();
     var $activated = activatedInput();
-    var $hideMeaning = meaningHideInput();
+    var $hideMeaning = hideMeaningInput();
     var $vocabularyList = vocabularyListSelect();
 
     return {
