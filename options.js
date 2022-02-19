@@ -1,6 +1,6 @@
 // Saves options to chrome.storage.
 function saveOptions() {
-    var newOptions = extractOptionsFromInputs();
+    const newOptions = extractOptionsFromInputs();
 
     console.log("Options saving: ");
     console.log(newOptions);
@@ -21,17 +21,17 @@ function saveOptions() {
 
 // Restores settings using the stored data in chrome.storage.
 function restoreOptions() {
-    var $period = periodInput();
-    var $activated = activatedInput();
-    var $hideMeaning = hideMeaningInput();
-    var $vocabularyList = vocabularyListSelect();
+    const $period = periodInput();
+    const $activated = activatedInput();
+    const $hideMeaning = hideMeaningInput();
+    const $vocabularyList = vocabularyListSelect();
 
     console.log("Options restoring...");
 
-    var options = {
+    const options = {
         period: localStorage.getItem("period") || 5,
-        activated: localStorage.getItem("activated") == "true",
-        hideMeaning: localStorage.getItem("hideMeaning") == "true",
+        activated: localStorage.getItem("activated") === "true",
+        hideMeaning: localStorage.getItem("hideMeaning") === "true",
         vocabularyList: localStorage.getItem("vocabularyList") || "globish"
     };
 
@@ -65,10 +65,10 @@ function vocabularyListSelect() {
 }
 
 function extractOptionsFromInputs() {
-    var $period = periodInput();
-    var $activated = activatedInput();
-    var $hideMeaning = hideMeaningInput();
-    var $vocabularyList = vocabularyListSelect();
+    const $period = periodInput();
+    const $activated = activatedInput();
+    const $hideMeaning = hideMeaningInput();
+    const $vocabularyList = vocabularyListSelect();
 
     return {
         period: parseInt($period.val()),
@@ -79,7 +79,7 @@ function extractOptionsFromInputs() {
 }
 
 function displayStatus(statusText) {
-    var $statusLabel = $('#statusLabel');
+    const $statusLabel = $('#statusLabel');
     $statusLabel.text(statusText);
     setTimeout(function () {
         $statusLabel.text('');

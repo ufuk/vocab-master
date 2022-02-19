@@ -13,15 +13,15 @@ chrome.browserAction.onClicked.addListener(function () {
 // Blocking
 chrome.webRequest.onBeforeRequest.addListener(
     function (requestDetails) {
-        var interceptedUrl = requestDetails.url;
-        var isProperToIntercept = requestDetails.method == "GET" && interceptedUrl.indexOf("http") == 0;
+        const interceptedUrl = requestDetails.url;
+        const isProperToIntercept = requestDetails.method === "GET" && interceptedUrl.indexOf("http") === 0;
 
         if (isProperToIntercept) {
             console.log(JSON.stringify(requestDetails));
 
-            var options = {
+            const options = {
                 period: localStorage.getItem("period") || 0,
-                activated: localStorage.getItem("activated") == "true",
+                activated: localStorage.getItem("activated") === "true",
                 lastInterceptingTime: localStorage.getItem("lastInterceptingTime") || 0
             };
 
@@ -35,21 +35,21 @@ chrome.webRequest.onBeforeRequest.addListener(
                 return;
             }
 
-            if (options.lastInterceptingTime == 0) {
+            if (options.lastInterceptingTime === 0) {
                 localStorage.setItem("lastInterceptingTime", new Date().getTime());
                 console.log('Last intercepting time initiated.');
                 return;
             }
 
-            var elapsedMillis = new Date().getTime() - options.lastInterceptingTime;
-            var periodInMillis = options.period * 60 * 1000;
+            const elapsedMillis = new Date().getTime() - options.lastInterceptingTime;
+            const periodInMillis = options.period * 60 * 1000;
 
             console.log('Elapsed millis: ' + elapsedMillis + ' - ' + 'Period in millis: ' + periodInMillis);
 
             if (options.period > 0 && elapsedMillis > periodInMillis) {
                 console.log('Intercepting for url: ' + interceptedUrl);
 
-                var url = chrome.extension.getURL("intercepting-page.html") + "?url=" + interceptedUrl;
+                const url = chrome.extension.getURL("intercepting-page.html") + "?url=" + interceptedUrl;
 
                 localStorage.setItem("lastInterceptingTime", new Date().getTime());
 

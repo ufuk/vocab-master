@@ -2,11 +2,8 @@
   "manifest_version": 2,
   "name": "Vocab Master",
   "description": "Reminds you vocabulary while you surfing.",
-  "version": "1.2.0",
-  "author": [
-    "Ufuk Uzun",
-    "Rafsun Chowdhury"
-  ],
+  "version": "1.2.1",
+  "author": "Ufuk Uzun",
   "background": {
     "persistent": true,
     "scripts": [
