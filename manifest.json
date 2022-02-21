@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Vocab Master",
   "description": "Reminds you vocabulary while you surfing.",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "author": "Ufuk Uzun",
   "background": {
     "persistent": true,
@@ -21,7 +21,6 @@
   "permissions": [
     "http://*/*",
     "https://*/*",
-    "storage",
     "webRequest",
     "webRequestBlocking"
   ],
