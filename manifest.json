@@ -7,7 +7,7 @@
   "background": {
     "persistent": true,
     "scripts": [
-      "main.js",
+      "background.js",
       "js.cookie.js"
     ]
   },
