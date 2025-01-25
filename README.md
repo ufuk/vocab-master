@@ -6,4 +6,6 @@ vocabulary items have example usages beside simple definition in English.
 Now available
 on [Chrome Web Store](https://chrome.google.com/webstore/detail/vocab-master/idchajmmmliappojgonadeffochffkge)
 
-![vocab-master](https://cloud.githubusercontent.com/assets/327434/23918310/26232360-08fb-11e7-8891-97c9526f7848.png)
+![vocab-master-popup](https://raw.githubusercontent.com/ufuk/vocab-master/refs/heads/master/example-popup.png)
+
+![vocab-master-options](https://raw.githubusercontent.com/ufuk/vocab-master/refs/heads/master/example-options.png)
