@@ -9,7 +9,7 @@
   },
   "action": {
     "default_icon": "vocab-icon.png",
-    "default_popup": "intercepting-page.html"
+    "default_popup": "popup.html"
   },
   "permissions": [
     "alarms",
