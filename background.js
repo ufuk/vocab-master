@@ -1,67 +1,58 @@
-chrome.runtime.onInstalled.addListener(function () {
+// When extension installed, open options page at once
+chrome.runtime.onInstalled.addListener(() => {
     console.log("Extension installed.");
+
     chrome.runtime.openOptionsPage(function () {
         console.log("Options page opened.");
     });
 });
 
-// Browser action clicked
-chrome.browserAction.onClicked.addListener(function () {
-    console.log("Browser action clicked.");
+// Get alarm options from Chrome Storage API
+function getAlarmOptions(callback) {
+    console.log("Getting options...");
+    chrome.storage.sync.get({
+        period: 5,
+        activated: false
+    }, function (options) {
+        callback(options);
+    });
+}
+
+// Create alarm
+// Documentation for "chrome.alarms": https://developer.chrome.com/extensions/alarms
+function createAlarm() {
+    getAlarmOptions((options) => {
+        chrome.alarms.clearAll(function () {
+            console.log("Alarms cleared.");
+
+            if (options && options.activated) {
+                chrome.alarms.create("vocabReminder", { periodInMinutes: options.period });
+                console.log("Alarm created.");
+            }
+        });
+    });
+}
+
+createAlarm();
+
+// Options page messages listener
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    console.log("Message received: " + request.message);
+
+    if (request.message === "newOptionsSaved") {
+        createAlarm();
+        sendResponse({ message: "alarmsReCreated" });
+    }
 });
 
-// Blocking
-chrome.webRequest.onBeforeRequest.addListener(
-    function (requestDetails) {
-        const interceptedUrl = requestDetails.url;
-        const isProperToIntercept = requestDetails.method === "GET" && interceptedUrl.indexOf("http") === 0;
-
-        if (isProperToIntercept) {
-            console.log(JSON.stringify(requestDetails));
-
-            const options = {
-                period: localStorage.getItem("period") || 0,
-                activated: localStorage.getItem("activated") === "true",
-                lastInterceptingTime: localStorage.getItem("lastInterceptingTime") || 0
-            };
-
-            if (!options.activated) {
-                console.log('Reminder is not activated.');
-                return;
-            }
-
-            if (options.period < 1) {
-                console.log('Invalid period.');
-                return;
-            }
-
-            if (options.lastInterceptingTime === 0) {
-                localStorage.setItem("lastInterceptingTime", new Date().getTime());
-                console.log('Last intercepting time initiated.');
-                return;
-            }
-
-            const elapsedMillis = new Date().getTime() - options.lastInterceptingTime;
-            const periodInMillis = options.period * 60 * 1000;
-
-            console.log('Elapsed millis: ' + elapsedMillis + ' - ' + 'Period in millis: ' + periodInMillis);
-
-            if (options.period > 0 && elapsedMillis > periodInMillis) {
-                console.log('Intercepting for url: ' + interceptedUrl);
-
-                const url = chrome.extension.getURL("intercepting-page.html") + "?url=" + interceptedUrl;
-
-                localStorage.setItem("lastInterceptingTime", new Date().getTime());
-
-                return {
-                    redirectUrl: url
-                };
-            }
+// Alarm listener
+chrome.alarms.onAlarm.addListener(async (alarm) => {
+    if (alarm.name === "vocabReminder") {
+        try {
+            await chrome.action.openPopup();
+            console.log("Popup opened.");
+        } catch (error) {
+            // Ignored
         }
-    },
-    {
-        urls: ["<all_urls>"],
-        types: ["main_frame"]
-    },
-    ["blocking"]
-);
+    }
+});

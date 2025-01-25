@@ -7,7 +7,7 @@ const selectedVocabularyList = vocabulary[vocabularyListOption];
 
 if (selectedVocabularyList.length === 0) {
     console.log("No vocabulary data! Redirecting directly to intercepted url...");
-    goToInterceptedUrl();
+    closePopup();
 }
 
 let randomVocabulary = {};
@@ -30,7 +30,7 @@ do {
 
 if (!isProperToShow) {
     console.log("No proper vocabulary found to show after lots of trying! Redirecting directly to intercepted url...");
-    goToInterceptedUrl();
+    closePopup();
 }
 
 // Prepare UI if vocabulary proper to display
@@ -47,13 +47,13 @@ function bindEvents() {
     });
 
     $('.show-again').click(function () {
-        goToInterceptedUrl();
+        closePopup();
     });
 
     $('.do-not-show-again').click(function () {
         excludedList.push(JSON.hashCode(randomVocabulary));
         localStorage.setItem("excludedList", JSON.stringify(excludedList));
-        goToInterceptedUrl();
+        closePopup();
     });
 }
 
@@ -109,10 +109,6 @@ function renderSticky() {
     $('.quote-container').show();
 }
 
-function goToInterceptedUrl() {
-    let interceptedUrl = window.location.search.replace('?url=', '').trim();
-    if (interceptedUrl.length === 0) {
-        interceptedUrl = 'http://google.com';
-    }
-    window.location.href = interceptedUrl;
+function closePopup() {
+    window.close();
 }

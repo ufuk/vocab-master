@@ -1,8 +1,6 @@
-Vocab Master
-============
+# Vocab Master
 
-Reminds you English vocabulary while you surfing. Activate reminder and set reminder period. Everytime when period ends
-Vocab Master will intercept your web page request, and show a random vocabulary from "globish" vocabulary list. Most of
+Reminds you English vocabulary while you surfing. Activate reminder and set reminder period. It will popup a random vocabulary from your selected vocabulary list. Most of
 vocabulary items have example usages beside simple definition in English.
 
 Now available

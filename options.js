@@ -5,8 +5,6 @@ function saveOptions() {
     console.log("Options saving: ");
     console.log(newOptions);
 
-    localStorage.setItem("period", newOptions.period);
-    localStorage.setItem("activated", newOptions.activated);
     localStorage.setItem("hideMeaning", newOptions.hideMeaning);
     localStorage.setItem("vocabularyList", newOptions.vocabularyList);
 
@@ -14,8 +12,22 @@ function saveOptions() {
 
     displayStatus("Options saved.");
 
-    chrome.runtime.sendMessage({message: "newOptionsSaved"}, function (response) {
-        // DO nothing for now
+    chrome.storage.sync.set({ period: newOptions.period, activated: newOptions.activated }, () => {
+        // Send message to refresh alarm
+        chrome.runtime.sendMessage({ message: "newOptionsSaved" }, function (response) {
+            console.log(response.message);
+        });
+    });
+}
+
+// Get alarm options from Chrome Storage API
+function getAlarmOptions(callback) {
+    console.log("Getting options...");
+    chrome.storage.sync.get({
+        period: 5,
+        activated: false
+    }, function (options) {
+        callback(options);
     });
 }
 
@@ -29,22 +41,25 @@ function restoreOptions() {
     console.log("Options restoring...");
 
     const options = {
-        period: localStorage.getItem("period") || 5,
-        activated: localStorage.getItem("activated") === "true",
         hideMeaning: localStorage.getItem("hideMeaning") === "true",
         vocabularyList: localStorage.getItem("vocabularyList") || "globish"
     };
 
-    $period.val(options.period);
-    $activated.prop('checked', options.activated);
-    $hideMeaning.prop('checked', options.hideMeaning);
+    getAlarmOptions((optionsFromStorage) => {
+        options.period = optionsFromStorage.period;
+        options.activated = optionsFromStorage.activated;
 
-    $vocabularyList
-        .find('option[value="' + options.vocabularyList + '"]')
-        .attr('selected', true);
+        $period.val(options.period);
+        $activated.prop('checked', options.activated);
+        $hideMeaning.prop('checked', options.hideMeaning);
 
-    console.log("Options restored: ");
-    console.log(options);
+        $vocabularyList
+            .find('option[value="' + options.vocabularyList + '"]')
+            .attr('selected', true);
+
+        console.log("Options restored: ");
+        console.log(options);
+    });
 }
 
 // Helper methods
